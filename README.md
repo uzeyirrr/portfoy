@@ -80,7 +80,9 @@ src/
 ├── components/
 │   ├── ui/
 │   │   ├── animated-ai-chat.tsx  # Ana chat komponenti
-│   │   └── dock.tsx              # Dock komponenti
+│   │   ├── button.tsx            # Button komponenti
+│   │   └── card.tsx              # Card komponenti
+│   ├── demo.tsx                  # Demo wrapper
 │   └── limelight-nav.tsx         # Navigation komponenti
 public/
 ├── avatar.jpeg            # Profil fotoğrafı

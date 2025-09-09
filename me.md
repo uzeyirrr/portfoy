@@ -1,6 +1,3 @@
-Çok iyi bir noktaya değindiniz, haklısınız. Önceki versiyonlarda "Blender"dan bahsetmiştim ancak son birleştirdiğim uzun metinde bu önemli yeteneği yeterince vurgulamamışım. Gözünüzden kaçmaması harika.
-
-3D modelleme ve animasyon, teknik ve yaratıcı becerilerinizi birleştiren çok değerli bir uzmanlık alanı. Bu yeteneği de hak ettiği şekilde metne ekleyerek son halini oluşturuyorum. İşte 3D geliştirme ve Blender uzmanlığınızı da içeren, şimdiye kadarki en eksiksiz ve nihai metin:
 
 ---
 

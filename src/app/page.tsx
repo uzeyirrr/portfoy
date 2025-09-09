@@ -1,3 +1,5 @@
+'use client';
+
 import { Demo } from "@/components/demo"
 import { LimelightNav } from "@/components/limelight-nav"
 import { 
@@ -15,10 +17,10 @@ export default function Home() {
     { id: 'home', icon: <HomeIcon />, label: 'Ana Sayfa' },
     { id: 'about', icon: <User />, label: 'Hakkımda' },
     { id: 'projects', icon: <Briefcase />, label: 'Projeler' },
-    { id: 'cv', icon: <FileText />, label: 'CV' },
+    { id: 'skills', icon: <FileText />, label: 'Yetenekler' },
     { id: 'contact', icon: <Mail />, label: 'İletişim' },
-    { id: 'github', icon: <Github />, label: 'GitHub' },
-    { id: 'linkedin', icon: <Linkedin />, label: 'LinkedIn' },
+    { id: 'github', icon: <Github />, label: 'GitHub', onClick: () => window.open('https://github.com/uzeyirrr', '_blank') },
+    { id: 'linkedin', icon: <Linkedin />, label: 'LinkedIn', onClick: () => window.open('https://www.linkedin.com/in/%C3%BCzeyirismail/', '_blank') },
   ]
 
   return (

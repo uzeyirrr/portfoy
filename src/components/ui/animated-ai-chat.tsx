@@ -4,14 +4,14 @@ import { useEffect, useRef, useCallback, useTransition, useMemo } from "react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
-    ImageIcon,
-    Figma,
-    MonitorIcon,
+    User,
+    Briefcase,
+    FileText,
+    Mail,
     Paperclip,
     SendIcon,
     XIcon,
     LoaderIcon,
-    Sparkles,
     Command,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -130,6 +130,13 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 )
 Textarea.displayName = "Textarea"
 
+interface Message {
+    id: string;
+    text: string;
+    isUser: boolean;
+    timestamp: Date;
+}
+
 export function AnimatedAIChat() {
     const [value, setValue] = useState("");
     const [attachments, setAttachments] = useState<string[]>([]);
@@ -138,37 +145,40 @@ export function AnimatedAIChat() {
     const [activeSuggestion, setActiveSuggestion] = useState<number>(-1);
     const [showCommandPalette, setShowCommandPalette] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [isChatOpen, setIsChatOpen] = useState(false);
     const { textareaRef, adjustHeight } = useAutoResizeTextarea({
         minHeight: 60,
         maxHeight: 200,
     });
     const [inputFocused, setInputFocused] = useState(false);
     const commandPaletteRef = useRef<HTMLDivElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const commandSuggestions: CommandSuggestion[] = useMemo(() => [
         { 
-            icon: <ImageIcon className="w-4 h-4" />, 
-            label: "Clone UI", 
-            description: "Generate a UI from a screenshot", 
-            prefix: "/clone" 
+            icon: <User className="w-4 h-4" />, 
+            label: "Kendinden Bahset", 
+            description: "Uzeyir hakkında bilgi al", 
+            prefix: "/about" 
         },
         { 
-            icon: <Figma className="w-4 h-4" />, 
-            label: "Import Figma", 
-            description: "Import a design from Figma", 
-            prefix: "/figma" 
+            icon: <Briefcase className="w-4 h-4" />, 
+            label: "Uzmanlık Alanları", 
+            description: "Hangi teknolojilerde uzman", 
+            prefix: "/skills" 
         },
         { 
-            icon: <MonitorIcon className="w-4 h-4" />, 
-            label: "Create Page", 
-            description: "Generate a new web page", 
-            prefix: "/page" 
+            icon: <FileText className="w-4 h-4" />, 
+            label: "Projeler", 
+            description: "Yaptığı projeleri gör", 
+            prefix: "/projects" 
         },
         { 
-            icon: <Sparkles className="w-4 h-4" />, 
-            label: "Improve", 
-            description: "Improve existing UI design", 
-            prefix: "/improve" 
+            icon: <Mail className="w-4 h-4" />, 
+            label: "İletişim", 
+            description: "Nasıl iletişime geçebilirim", 
+            prefix: "/contact" 
         },
     ], []);
 
@@ -252,16 +262,12 @@ export function AnimatedAIChat() {
         }
     };
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (value.trim()) {
-            startTransition(() => {
-                setIsTyping(true);
-                setTimeout(() => {
-                    setIsTyping(false);
-                    setValue("");
-                    adjustHeight(true);
-                }, 3000);
-            });
+            // Chat sayfasına yönlendir
+            const params = new URLSearchParams();
+            params.set('message', value);
+            window.location.href = `/chat?${params.toString()}`;
         }
     };
 
@@ -276,9 +282,33 @@ export function AnimatedAIChat() {
     
     const selectCommandSuggestion = (index: number) => {
         const selectedCommand = commandSuggestions[index];
-        setValue(selectedCommand.prefix + ' ');
+        let commandText = '';
+        
+        switch(selectedCommand.prefix) {
+            case '/about':
+                commandText = 'Kendinden bahseder misin? Kimsin, ne yapıyorsun?';
+                break;
+            case '/skills':
+                commandText = 'Hangi teknolojilerde uzmansın? Uzmanlık alanların neler?';
+                break;
+            case '/projects':
+                commandText = 'Hangi projeleri yaptın? En beğendiğin projeler neler?';
+                break;
+            case '/contact':
+                commandText = 'Nasıl iletişime geçebilirim? İletişim bilgilerin neler?';
+                break;
+            default:
+                commandText = selectedCommand.prefix + ' ';
+        }
+        
+        setValue(commandText);
         setShowCommandPalette(false);
     };
+
+    // Auto scroll to bottom when new messages arrive
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     return (
         <div className="min-h-screen flex flex-col w-full items-center justify-center bg-black text-white p-6 pb-32 relative overflow-hidden">
@@ -288,12 +318,13 @@ export function AnimatedAIChat() {
                 <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-fuchsia-500/10 rounded-full mix-blend-normal filter blur-[96px] animate-pulse delay-1000" />
             </div>
             <div className="w-full max-w-2xl mx-auto relative">
-                <motion.div 
-                    className="relative z-10 space-y-12"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                >
+                {!isChatOpen ? (
+                    <motion.div 
+                        className="relative z-10 space-y-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                    >
                     <div className="text-center space-y-3">
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
@@ -302,7 +333,7 @@ export function AnimatedAIChat() {
                             className="inline-block"
                         >
                             <h1 className="text-3xl font-medium tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white/90 to-white/40 pb-1">
-                                How can I help today?
+                                Üzeyir İsmail Bahtiyar
                             </h1>
                             <motion.div 
                                 className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
@@ -317,16 +348,17 @@ export function AnimatedAIChat() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.3 }}
                         >
-                            Type a command or ask a question
+                            Full Stack Developer & UI/UX Designer
                         </motion.p>
                     </div>
 
-                    <motion.div 
-                        className="relative backdrop-blur-2xl bg-white/[0.02] rounded-2xl border border-white/[0.05] shadow-2xl"
-                        initial={{ scale: 0.98 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.1 }}
-                    >
+                    {!isChatOpen && (
+                        <motion.div 
+                            className="relative backdrop-blur-2xl bg-white/[0.02] rounded-2xl border border-white/[0.05] shadow-2xl"
+                            initial={{ scale: 0.98 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.1 }}
+                        >
                         <AnimatePresence>
                             {showCommandPalette && (
                                 <motion.div 
@@ -377,7 +409,7 @@ export function AnimatedAIChat() {
                                 onKeyDown={handleKeyDown}
                                 onFocus={() => setInputFocused(true)}
                                 onBlur={() => setInputFocused(false)}
-                                placeholder="Ask zap a question..."
+                                placeholder="Uzeyir'e bir soru sor..."
                                 containerClassName="w-full"
                                 className={cn(
                                     "w-full px-4 py-3",
@@ -482,7 +514,8 @@ export function AnimatedAIChat() {
                                 <span>Send</span>
                             </motion.button>
                         </div>
-                    </motion.div>
+                        </motion.div>
+                    )}
 
                     <div className="flex flex-wrap items-center justify-center gap-2">
                         {commandSuggestions.map((suggestion, index) => (
@@ -511,7 +544,126 @@ export function AnimatedAIChat() {
                             </motion.button>
                         ))}
                     </div>
-                </motion.div>
+                    </motion.div>
+                ) : (
+                    <motion.div 
+                        className="relative z-10 h-[600px] flex flex-col"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                    >
+                        {/* Chat Header */}
+                        <div className="flex items-center justify-between p-4 border-b border-white/10">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                                    <span className="text-sm font-medium text-white">U</span>
+                                </div>
+                                <div>
+                                    <h3 className="text-white font-medium">Uzeyir İsmail Bahtiyar</h3>
+                                    <p className="text-xs text-white/60">Çevrimiçi</p>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={() => setIsChatOpen(false)}
+                                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            >
+                                <XIcon className="w-5 h-5 text-white/60" />
+                            </button>
+                        </div>
+
+                        {/* Messages */}
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                            {messages.map((message) => (
+                                <motion.div
+                                    key={message.id}
+                                    className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <div className={`max-w-[80%] p-3 rounded-lg ${
+                                        message.isUser 
+                                            ? 'bg-white text-black' 
+                                            : 'bg-white/10 text-white'
+                                    }`}>
+                                        <p className="text-sm">{message.text}</p>
+                                        <p className="text-xs opacity-60 mt-1">
+                                            {message.timestamp.toLocaleTimeString('tr-TR', { 
+                                                hour: '2-digit', 
+                                                minute: '2-digit' 
+                                            })}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                            
+                            {isTyping && (
+                                <motion.div
+                                    className="flex justify-start"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                >
+                                    <div className="bg-white/10 text-white p-3 rounded-lg">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-sm">Uzeyir yazıyor</span>
+                                            <TypingDots />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                            
+                            <div ref={messagesEndRef} />
+                        </div>
+
+                        {/* Chat Input */}
+                        <div className="p-4 border-t border-white/10">
+                            <div className="flex gap-2">
+                                <Textarea
+                                    ref={textareaRef}
+                                    value={value}
+                                    onChange={(e) => {
+                                        setValue(e.target.value);
+                                        adjustHeight();
+                                    }}
+                                    onKeyDown={handleKeyDown}
+                                    placeholder="Mesajınızı yazın..."
+                                    containerClassName="flex-1"
+                                    className={cn(
+                                        "w-full px-3 py-2",
+                                        "resize-none",
+                                        "bg-white/5",
+                                        "border border-white/20",
+                                        "text-white/90 text-sm",
+                                        "focus:outline-none",
+                                        "placeholder:text-white/40",
+                                        "min-h-[40px]"
+                                    )}
+                                    showRing={false}
+                                />
+                                <motion.button
+                                    type="button"
+                                    onClick={handleSendMessage}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    disabled={isTyping || !value.trim()}
+                                    className={cn(
+                                        "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                                        "flex items-center gap-2",
+                                        value.trim()
+                                            ? "bg-white text-black"
+                                            : "bg-white/10 text-white/40"
+                                    )}
+                                >
+                                    {isTyping ? (
+                                        <LoaderIcon className="w-4 h-4 animate-[spin_2s_linear_infinite]" />
+                                    ) : (
+                                        <SendIcon className="w-4 h-4" />
+                                    )}
+                                </motion.button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
             </div>
 
             <AnimatePresence>
@@ -524,10 +676,10 @@ export function AnimatedAIChat() {
                     >
                         <div className="flex items-center gap-3">
                             <div className="w-8 h-7 rounded-full bg-white/[0.05] flex items-center justify-center text-center">
-                                <span className="text-xs font-medium text-white/90 mb-0.5">zap</span>
+                                <span className="text-xs font-medium text-white/90 mb-0.5">U</span>
                             </div>
                             <div className="flex items-center gap-2 text-sm text-white/70">
-                                <span>Thinking</span>
+                                <span>Düşünüyor</span>
                                 <TypingDots />
                             </div>
                         </div>

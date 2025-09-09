@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Üzeyir İsmail Bahtiyar - Portföy Sitesi
 
-## Getting Started
+Modern ve interaktif portföy sitesi. AI destekli chat sistemi ile ziyaretçilerle etkileşim kurun.
 
-First, run the development server:
+## 🚀 Özellikler
 
+- **AI Chat Sistemi**: OpenAI GPT-3.5-turbo ile entegre chat
+- **Responsive Tasarım**: Mobil ve masaüstü uyumlu
+- **Modern UI**: Shadcn UI ve Tailwind CSS
+- **Animasyonlar**: Framer Motion ile smooth animasyonlar
+- **Dark Mode**: Koyu tema desteği
+- **Tıklanabilir Linkler**: CV, LinkedIn, GitHub linkleri
+- **Hazır Sorular**: Hızlı etkileşim için önceden tanımlı sorular
+
+## 🛠️ Teknolojiler
+
+- **Frontend**: Next.js 14, React, TypeScript
+- **Styling**: Tailwind CSS, Shadcn UI
+- **Animations**: Framer Motion
+- **AI**: OpenAI GPT-3.5-turbo
+- **Icons**: Lucide React
+- **Deployment**: Vercel Ready
+
+## 📦 Kurulum
+
+1. **Repository'yi klonlayın**:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/uzeyirrr/portfoy.git
+cd portfoy
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Bağımlılıkları yükleyin**:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Environment değişkenlerini ayarlayın**:
+`.env.local` dosyası oluşturun:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Geliştirme sunucusunu başlatın**:
+```bash
+npm run dev
+```
 
-## Learn More
+5. **Tarayıcıda açın**: [http://localhost:3000](http://localhost:3000)
 
-To learn more about Next.js, take a look at the following resources:
+## 🎯 Kullanım
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Ana Sayfa
+- AI chat arayüzü ile etkileşim
+- Hazır sorular ile hızlı başlangıç
+- Responsive navigation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Chat Sayfası
+- Tam ekran chat deneyimi
+- Mesaj geçmişi
+- Tıklanabilir linkler (CV, LinkedIn, GitHub)
+- Otomatik scroll
+- Typing indicator
 
-## Deploy on Vercel
+### Hazır Sorular
+- `/about` - Hakkımda bilgi
+- `/skills` - Teknik yetenekler
+- `/projects` - Projeler
+- `/contact` - İletişim bilgileri
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Proje Yapısı
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── api/chat/          # OpenAI API endpoint
+│   ├── chat/              # Chat sayfası
+│   ├── globals.css        # Global stiller
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Ana sayfa
+├── components/
+│   ├── ui/
+│   │   ├── animated-ai-chat.tsx  # Ana chat komponenti
+│   │   └── dock.tsx              # Dock komponenti
+│   └── limelight-nav.tsx         # Navigation komponenti
+public/
+├── avatar.jpeg            # Profil fotoğrafı
+└── cv.pdf                 # CV dosyası
+```
+
+## 🔧 API Yapılandırması
+
+Chat API'si `/api/chat` endpoint'inde çalışır:
+- **Model**: GPT-3.5-turbo
+- **System Prompt**: Üzeyir'in kişisel bilgileri
+- **Response**: JSON formatında mesaj
+
+## 🎨 Özelleştirme
+
+### Sistem Prompt'u Güncelleme
+`src/app/api/chat/route.ts` dosyasındaki `systemPrompt` değişkenini düzenleyin.
+
+### Stil Değişiklikleri
+- `src/app/globals.css` - Global stiller
+- Tailwind CSS sınıfları - Komponent stilleri
+
+### Yeni Hazır Sorular
+`src/components/ui/animated-ai-chat.tsx` dosyasındaki `commandSuggestions` array'ini güncelleyin.
+
+## 📱 Responsive Tasarım
+
+- **Desktop**: Sidebar navigation
+- **Mobile**: Top navigation
+- **Chat**: Tek sütun layout (ChatGPT benzeri)
+- **Breakpoints**: Tailwind CSS responsive utilities
+
+## 🚀 Deployment
+
+### Vercel (Önerilen)
+1. GitHub repository'yi Vercel'e bağlayın
+2. Environment variables ekleyin:
+   - `OPENAI_API_KEY`
+3. Deploy edin
+
+### Diğer Platformlar
+- Netlify
+- Railway
+- Heroku
+
+## 📞 İletişim
+
+- **Email**: uzeyirismailbahtiyar@gmail.com
+- **LinkedIn**: [Üzeyir İsmail Bahtiyar](https://www.linkedin.com/in/%C3%BCzeyirismail/)
+- **GitHub**: [uzeyirrr](https://github.com/uzeyirrr)
+- **Phone**: +90 533 284 90 76
+
+## 📄 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır.
+
+---
+
+**Üzeyir İsmail Bahtiyar** - Full Stack Developer & UI/UX Designer

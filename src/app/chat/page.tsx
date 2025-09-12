@@ -449,43 +449,43 @@ export default function ChatPage() {
             {/* Content */}
             <div className="relative z-10 flex flex-col h-full">
             {/* Header */}
-            <div className="border-b border-white/10 p-4">
+            <div className="border-b border-white/10 p-3 md:p-4 flex-shrink-0">
                 <div className="flex items-center justify-between max-w-4xl mx-auto">
-                    <Link href="/" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors">
-                        <ArrowLeft className="w-5 h-5" />
-                        <span>Ana Sayfa</span>
+                    <Link href="/" className="flex items-center gap-2 md:gap-3 text-white/60 hover:text-white transition-colors">
+                        <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
+                        <span className="text-sm md:text-base">Ana Sayfa</span>
                     </Link>
                     
-                    <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden">
+                    <div className="flex items-center gap-2 md:gap-3">
+                        <div className="w-6 h-6 md:w-8 md:h-8 rounded-full overflow-hidden">
                             <img 
                                 src="/avatar.jpeg" 
                                 alt="Uzeyir İsmail Bahtiyar" 
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        <div>
-                            <h1 className="text-white font-medium">Uzeyir İsmail Bahtiyar</h1>
+                        <div className="hidden sm:block">
+                            <h1 className="text-white font-medium text-sm md:text-base">Uzeyir İsmail Bahtiyar</h1>
                             <p className="text-xs text-white/60">Çevrimiçi</p>
                         </div>
                     </div>
                     
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 md:gap-2">
                         <a 
                             href="https://github.com/uzeyirrr" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-1.5 md:p-2 hover:bg-white/10 rounded-lg transition-colors"
                         >
-                            <Github className="w-5 h-5 text-white/60" />
+                            <Github className="w-4 h-4 md:w-5 md:h-5 text-white/60" />
                         </a>
                         <a 
                             href="https://www.linkedin.com/in/%C3%BCzeyirismail/" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-1.5 md:p-2 hover:bg-white/10 rounded-lg transition-colors"
                         >
-                            <Linkedin className="w-5 h-5 text-white/60" />
+                            <Linkedin className="w-4 h-4 md:w-5 md:h-5 text-white/60" />
                         </a>
                     </div>
                 </div>
@@ -493,7 +493,7 @@ export default function ChatPage() {
 
             <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-h-0">
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+                <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-4 min-h-0">
                     {messages.length === 0 && (
                         <div className="text-center py-12">
                             <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-4">
@@ -636,7 +636,7 @@ export default function ChatPage() {
                 </div>
 
                 {/* Input */}
-                <div className="p-4 border-t border-white/10">
+                <div className="p-3 md:p-4 border-t border-white/10 flex-shrink-0">
                     <div className="flex gap-2">
                         <Textarea
                             ref={textareaRef}

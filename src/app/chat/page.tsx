@@ -19,6 +19,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import * as React from "react";
 import Link from "next/link";
+import { Waves } from "@/components/ui/wave-background";
 
 interface Message {
     id: string;
@@ -437,7 +438,16 @@ export default function ChatPage() {
     };
 
     return (
-        <div className="h-screen bg-black text-white flex flex-col overflow-hidden">
+        <div className="h-screen text-white flex flex-col overflow-hidden relative">
+            {/* Wave Background */}
+            <div className="absolute inset-0 z-0">
+                <Waves className="h-full w-full" />
+                {/* Gradient overlay - black from top and bottom, 70% black in middle */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black via-black/85 to-black"></div>
+            </div>
+            
+            {/* Content */}
+            <div className="relative z-10 flex flex-col h-full">
             {/* Header */}
             <div className="border-b border-white/10 p-4">
                 <div className="flex items-center justify-between max-w-4xl mx-auto">
@@ -672,6 +682,7 @@ export default function ChatPage() {
                         </motion.button>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );

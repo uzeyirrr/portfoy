@@ -4,7 +4,7 @@ Modern ve interaktif portföy sitesi. AI destekli chat sistemi ile ziyaretçiler
 
 ---
 
-## 🇹🇷 Türkçe | [🇺🇸 English](#english)
+## 🇹🇷 Türkçe | [🇺🇸 English](#-english)
 
 ---
 

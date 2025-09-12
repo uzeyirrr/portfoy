@@ -302,4 +302,8 @@ This project is licensed under the MIT License.
 
 ---
 
+<<<<<<< HEAD
 **Üzeyir İsmail Bahtiyar** - Full Stack Developer & UI/UX Designer
+=======
+**Üzeyir İsmail Bahtiyar** - Full Stack Developer & UI/UX Designer
+>>>>>>> 153eff8989b10e851a65b12fb089c9ee2ce59318
